@@ -93,8 +93,10 @@ jobs:
           ABI=arm64-v8a \
           LDFLAGS="-Wl,-z,max-page-size=16384" \
           make -j$(nproc)
-          # Asegurar mapeo de carpetas por si acaso
-          if [ -d "build-arm64-v8a" ] && [ ! -d "build-arm64" ]; then ln -s build-arm64-v8a build-arm64; fi
+                    [ -d build-arm64 ] && [ ! -e build-arm64-v8a ] && ln -s build-arm64 build-arm64-v8a || true
+          [ -d build-arm64-v8a ] && [ ! -e build-arm64 ] && ln -s build-arm64-v8a build-arm64 || true
+          ls -d build-* || true
+          find . -maxdepth 4 \( -name '*.a' -o -name '*.so' \) | head -60
 
       # ── 9. Make Gradle wrapper executable ────────────────────────────────────
       - name: Grant execute permission for gradlew
