@@ -17,6 +17,8 @@ public class Gamepad
 {
     private GamepadConfig mGamepadConfig = null;
     private boolean mInvisible = false;
+    private boolean mEnabled = true;
+    private java.util.Map<Integer, Integer> mBinds = new java.util.HashMap<>();
 
     private OnKeyDownListener mOnKeyDownListener = key -> {};
     private OnKeyUpListener mOnKeyUpListener = key -> {};
@@ -55,6 +57,20 @@ public class Gamepad
     private GamepadButton gpadBtnCTRL;
     private GamepadButton gpadBtnALT;
     private GamepadButton gpadBtnSHIFT;
+
+    /** Pemetaan tombol gamepad fisik -> keycode keyboard (dari launcher). */
+    public void setBinds(java.util.Map<Integer, Integer> binds)
+    {
+        mBinds = (binds != null) ? binds : new java.util.HashMap<Integer, Integer>();
+    }
+
+    /** Tampilkan/sembunyikan vGamepad sepenuhnya (pengaturan launcher). */
+    public void setEnabled(boolean enabled)
+    {
+        mEnabled = enabled;
+        if (mGamepadLayout != null)
+            mGamepadLayout.setVisibility(enabled ? android.view.View.VISIBLE : android.view.View.GONE);
+    }
 
     public void init(GamepadConfig gpadConfig, boolean invisible)
     {
@@ -121,7 +137,7 @@ public class Gamepad
 
     public void showView()
     {
-        if (mGamepadLayout != null) {
+        if (mEnabled && mGamepadLayout != null) {
             if (mGamepadLayout.getAlpha() == 0)
                 mGamepadLayout.setAlpha(1);
 
@@ -134,7 +150,7 @@ public class Gamepad
 
     public void hideView()
     {
-        if (mGamepadLayout != null) {
+        if (mEnabled && mGamepadLayout != null) {
             AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
             anim.setDuration(500);
             anim.setFillAfter(true);
@@ -173,6 +189,10 @@ public class Gamepad
             return false;
 
         int keycode = evt.getKeyCode();
+
+        Integer mapped = mBinds.get(keycode);
+        if (mapped != null)
+            keycode = mapped;
 
         switch (evt.getAction())
         {
@@ -217,6 +237,10 @@ public class Gamepad
 
         if (keycode == null)
             return false;
+
+        Integer mappedDir = mBinds.get(keycode);
+        if (mappedDir != null)
+            keycode = mappedDir;
 
         switch (evt.getAction())
         {

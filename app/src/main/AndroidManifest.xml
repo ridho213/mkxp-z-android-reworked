@@ -49,6 +49,25 @@
         android:allowBackup="true"
         android:requestLegacyExternalStorage="true"
     >
+        <!-- Launcher: pengaturan renderer, vGamepad, gamepad bind, lalu Main -->
+        <activity
+            android:name=".LauncherActivity"
+            android:label="mkxp-z"
+            android:exported="true"
+        >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".BindActivity"
+            android:label="Gamepad Bind"
+            android:exported="false"
+        />
+
         <!-- Main activity -->
         <activity
             android:name=".MainActivity"
@@ -62,10 +81,6 @@
             android:exported="true"
         >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
-
                 <!-- Let Android know that we can handle some USB devices and should receive this event -->
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
             </intent-filter>

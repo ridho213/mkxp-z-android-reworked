@@ -103,6 +103,9 @@ public class MainActivity extends SDLActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        // Pilih renderer (OpenGL ES / Vulkan via ANGLE) sebelum SDL memuat library
+        MkxpRenderer.apply(this);
+
         super.onCreate(savedInstanceState);
 
         mStorageManager = (StorageManager) getSystemService(STORAGE_SERVICE);
@@ -133,14 +136,20 @@ public class MainActivity extends SDLActivity
         }
 
         // Setup in-screen gamepad
+        MkxpPrefs prefs = new MkxpPrefs(this);
         mGamepadInvisible = (isAndroidTV() || isChromebook());
         GamepadConfig gpadConfig = new GamepadConfig();
+        gpadConfig.opacity = prefs.getOpacity();
+        gpadConfig.scale = prefs.getScale();
+        gpadConfig.diagonalMovement = prefs.isDiagonal();
         mGamepad.init(gpadConfig, mGamepadInvisible);
+        mGamepad.setBinds(prefs.loadBinds());
         mGamepad.setOnKeyDownListener(SDLActivity::onNativeKeyDown);
         mGamepad.setOnKeyUpListener(SDLActivity::onNativeKeyUp);
 
         if (mLayout != null) {
             mGamepad.attachTo(this, mLayout);
+            mGamepad.setEnabled(prefs.isVpadEnabled());
         }
     }
 
