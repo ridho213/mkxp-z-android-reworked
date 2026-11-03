@@ -52,7 +52,7 @@
         <!-- Launcher: pengaturan renderer, vGamepad, gamepad bind, lalu Main -->
         <activity
             android:name=".LauncherActivity"
-            android:label="mkxp-z"
+            android:label="Changed Special"
             android:exported="true"
         >
             <intent-filter>
@@ -71,7 +71,7 @@
         <!-- Main activity -->
         <activity
             android:name=".MainActivity"
-            android:label="mkxp-z"
+            android:label="Changed Special"
             android:alwaysRetainTaskState="true"
             android:launchMode="singleTask"
             android:screenOrientation="sensorLandscape"

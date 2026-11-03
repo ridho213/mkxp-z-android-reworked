@@ -103,7 +103,7 @@ public class LauncherActivity extends Activity
         root.removeAllViews();
 
         TextView title = new TextView(this);
-        title.setText("mkxp-z Launcher");
+        title.setText("Changed Special Launcher");
         title.setTextSize(24f);
         add(title);
 
